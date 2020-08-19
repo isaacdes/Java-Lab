@@ -1,153 +1,125 @@
-import java.io.*;
-import java.util.*;
 import java.lang.String;
 import java.lang.Thread;
-import java.lang.Exception;
-class oddreverse
-{
-	String reverseOdd(String input)
-	{
-		int length=input.length();
-		if(length % 2 == 0)
-		{
-			return "Cannot be reversed! ";
-		}
-		
-		length=length-1;
-		String reverse="";
-		for(int j=length ;j>=0;j--)
-		{
-			reverse+=input.charAt(j);
-		}
-		return reverse;
+
+
+class OddReverse{
+	String reverseOdd(String str){
+		int len = str.length();
+		if(len %2 == 0)
+			return "Cannot be reversed";
+		len--;
+		String rev ="";
+		for(int i=len; i>=0; i--)
+			rev += str.charAt(i);
+		return rev;
 	}
 }
 
-class oddreversethread implements Runnable
-{
-	String input;
-	oddreverse obj1=new oddreverse();
-	Thread obj2=new Thread(this);
-	
-	public void run()
-	{
-		try
-		{
-			obj2.sleep(1000);	
-		}
-		catch(InterruptedException e)
-		{
-			System.out.println(e);
-		}
-		String reverse=obj1.reverseOdd(input);
-		System.out.println("Reversed String is "+reverse);
-	}
-	
-	oddreversethread(String str)
-	{
-		input=str;
-		obj2.start();
-	}
-	
-}
-	
-	
-class Happynumber
-{
-	static int count=0;
-	static int flag=0;
-	String happyAlgorithm(int input)
-	{
-		
-		int number,digit,square_sum=0;
-		if(input==4 || input==16 || input==37 || input==58 || input == 89 || input==145 || input == 42 || input == 20)
-		{
-			flag=0;
-			return "sad number";
-		}
-		
-		count++;
-		
-		//Finding the sum of square of digits
-		number=input;
-		while (number > 0)
-		{
-			digit=number%10;
-			square_sum	+=	digit*digit;
-			number=number/10;
-		}
-		number=square_sum;
-	
-		//checking whether sum is happy number or not
-		if ( number==1)
-		{
-			flag=1;
-			return "happy number with count :"+count;
-		}
-		else
-		{
-			happyAlgorithm(number);
-		}
-		
-		
-		if(flag==1)
-		{
-			return "happy number with count :"+count;
-		}
-		else
-		{
-			return "sad number";
-		}
-		
-	}
-}
-
-class happynumberthread implements Runnable
-{
-	int number;
-	Happynumber obj1=new Happynumber();
-	Thread obj2=new Thread(this);
-	
-	public void run()
-	{
-		try
-		{
-			obj2.sleep(1000);
-		}
-		catch(InterruptedException e)
-		{
-			System.out.println(e);
-		}	
-			
-		String result=obj1.happyAlgorithm(number);
-		System.out.println(result);
-	}
-	
-	
-	happynumberthread(int num)
-	{
-		number=num;
-		obj2.start();//calling run function of thread
-	}
-
-}
-
-
-
-class threadreversehappy
-{
-	public static void main(String[] args)
-	{
-		oddreversethread object1=new oddreversethread("Testing the program");
-		try
-		{
+class OddReverseThread implements Runnable {
+	String str;
+	OddReverse obj1 = new OddReverse();
+	Thread obj2 = new Thread(this);
+	public void run(){
+		try {
 			Thread.sleep(1000);
 		}
-		catch(InterruptedException e)
-		{
+		catch(InterruptedException e) {
 			System.out.println(e);
 		}
-		happynumberthread object2=new happynumberthread(139);
+		String rev = obj1.reverseOdd(str);
+		System.out.println("Reversed String is " + rev);
 	}
 	
+	OddReverseThread(String str){
+		this.str = str;
+		obj2.start();
+	}
+}
+
+class HappyNumber {
+	static int count = 0;
+	static int flag = 0;
+	
+	String happyAlgorithm(int num){
+		int d, sq_sum = 0;
+		if(num == 4 || num == 16 || num == 37 || num == 58 || num == 89 || num == 145 || num == 42 || num ==20){
+			flag = 0;
+			return "Sad Number";
+		}
+		count ++;
+		
+		//To find the number of sqaures
+		while (num != 0){
+			d = num  % 10;
+			sq_sum += d*d;
+			num  = num/10;
+		}
+		
+		//to find out if number is happy or not
+		if(sq_sum == 1) {
+			flag =1;
+			return "Happy number with count: " + count;
+		}
+		else
+			happyAlgorithm(sq_sum);
+		
+		if(flag == 1)
+			return "HAppy number with count: " + count;
+		
+		else
+			return "Sad number";
+	}
+}
+
+class HappyNumberThread implements Runnable {
+	int num;
+	HappyNumber obj1 = new HappyNumber();
+	Thread obj2 = new Thread(this);
+	
+	public void run() {
+		try {
+			Thread.sleep(1000);
+		}
+		catch(InterruptedException e){
+			System.out.println(e);
+		}
+		
+		String res = obj1.happyAlgorithm(num);
+		System.out.println(res);
+	}
+	
+	HappyNumberThread(int num){
+		this.num = num;
+		obj2.start();
+	}
+}
+
+ class threadreversehappy {
+	public static void main(String[] args) {
+		OddReverseThread obj1 = new OddReverseThread("Testing the String");
+		try {
+			Thread.sleep(1000);
+		}
+		catch(InterruptedException e){
+			System.out.println(e);
+		}
+
+		OddReverseThread obj2 = new OddReverseThread("Testing the program");
+		try {
+			Thread.sleep(1000);
+		}
+		catch(InterruptedException e){
+			System.out.println(e);
+		}
+
+		HappyNumberThread obj3 = new HappyNumberThread(191);
+		try {
+			Thread.sleep(1000);
+		}
+		catch(InterruptedException e){
+			System.out.println(e);
+		}
+
+		HappyNumberThread obj4 = new HappyNumberThread(48);
+	}
 }
